@@ -1,0 +1,17 @@
+" show number
+set number
+" highlight the 80th column
+set colorcolumn=80
+" set the column highlight color to light blue
+highlight ColorColumn ctermbg=lightblue guibg=lightblue
+" don't wrap lines
+set nowrap
+
+lua << EOF
+local lspconfig = require('lspconfig')
+lspconfig.hls.setup{
+	cmd = { "haskell-language-server-wrapper", "--lsp" },	
+}
+EOF
+
+" vim: filetype=vim 
