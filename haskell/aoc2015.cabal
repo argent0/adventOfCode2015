@@ -59,7 +59,7 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Day01, Day02
+    exposed-modules:  Day01, Day02, Day03, Day04
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -73,6 +73,10 @@ library
       , attoparsec ^>= 0.14
       , bytestring ^>= 0.11
       , free ^>= 5.2
+      , vector ^>= 0.13
+      , matrix ^>= 0.3
+      , containers ^>= 0.6
+      , cryptohash ^>= 0.11
 
     -- Directories containing source files.
     hs-source-dirs:   lib

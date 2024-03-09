@@ -30,5 +30,8 @@ in pkgs.mkShell {
     ghcid
     cabal-install
     haskellPackages.doctest
+
+    # utilities
+    watchexec
   ];
 }
