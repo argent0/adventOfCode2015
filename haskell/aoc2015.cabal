@@ -76,7 +76,7 @@ library
       , vector ^>= 0.13
       , matrix ^>= 0.3
       , containers ^>= 0.6
-      , cryptohash ^>= 0.11
+      , pureMD5 ^>= 2.1
 
     -- Directories containing source files.
     hs-source-dirs:   lib
