@@ -7,6 +7,7 @@ import Data.List (find)
 import Control.Monad ((>=>))
 import Text.Regex.TDFA ((=~))
 import Data.Maybe (isJust)
+import Control.Applicative ((<|>))
 
 two :: (a -> Bool) -> [a] -> Maybe (a, a)
 two _ [] = Nothing
@@ -53,6 +54,24 @@ hasBadStrings (s:ss) p = p =~ badsRegex
 -- False
 nice :: String -> Bool
 nice s = not (hasBadStrings ["ab", "cd", "pq", "xy"] s) && isJust ( threeVowels s *> twiceInARow s )
+
+-- | True if the string has a pair of letters that appears at least twice without overlapping
+-- >>> pairTwice "xyxy"
+-- Just ('x','y')
+-- >>> pairTwice "aaa"
+-- Nothing
+-- >>> pairTwice "qjhvhtzxzqqjkmpb"
+-- Just ('q','j')
+-- >>> pairTwice "xxyxx"
+-- Just ('x','x')
+-- >>> pairTwice "uurcxstgmygtbstg"
+-- Just ('s','t')
+-- >>> pairTwice "ieodomkazucvgmuy"
+-- Nothing
+pairTwice :: String -> Maybe (Char, Char)
+pairTwice [] = Nothing
+pairTwice [_] = Nothing
+pairTwice (x:y:xs) = find (== (x, y)) (zip xs (tail xs)) <|> pairTwice (y:xs)
 
 part1 :: [String] -> Int
 part1 = length . filter nice
