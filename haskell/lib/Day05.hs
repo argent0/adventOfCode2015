@@ -1,6 +1,6 @@
 module Day05 where
 
-import Data.Attoparsec.ByteString.Char8 (letter_ascii, skipSpace, char)
+import Data.Attoparsec.ByteString.Char8 (letter_ascii, char)
 import Data.Attoparsec.ByteString (Parser, sepBy1, many1, eitherResult, parse)
 import qualified Data.ByteString.Char8 as B
 import Data.List (find)
@@ -73,11 +73,34 @@ pairTwice [] = Nothing
 pairTwice [_] = Nothing
 pairTwice (x:y:xs) = find (== (x, y)) (zip xs (tail xs)) <|> pairTwice (y:xs)
 
+-- | Extracts the letter that repeats with exactly one letter between them
+-- >>> repeatWithOne "xyx"
+-- Just ('x','y')
+-- >>> repeatWithOne "abcd"
+-- Nothing
+-- >>> repeatWithOne "aaa"
+-- Just ('a','a')
+-- >>> repeatWithOne "qjhvhtzxzqqjkmpb"
+-- Just ('h','v')
+-- >>> repeatWithOne "xxyxx"
+-- Just ('x','y')
+-- >>> repeatWithOne "uurcxstgmygtbstg"
+-- Nothing
+-- >>> repeatWithOne "ieodomkazucvgmuy"
+-- Just ('o','d')
+repeatWithOne :: String -> Maybe (Char, Char)
+repeatWithOne [] = Nothing
+repeatWithOne [_] = Nothing
+repeatWithOne [_, _] = Nothing
+repeatWithOne (x:x':x'':xs)
+	| x == x'' = Just (x, x')
+	| otherwise = repeatWithOne (x':x'':xs)
+
 part1 :: [String] -> Int
 part1 = length . filter nice
 
 part2 :: [String] -> Int
-part2 = part1
+part2 = length . filter (\s -> isJust (pairTwice s *> repeatWithOne s))
 
 inputParser :: Parser [String]
 inputParser = sepBy1 (many1 letter_ascii) (char '\n')
